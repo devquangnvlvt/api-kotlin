@@ -11,7 +11,8 @@ class UserController extends Controller
      * Get authenticated user profile
      */
     public function profile(Request $request)
-    {
+    {   
+        
         return response()->json([
             'user' => new UserResource($request->user())
         ], 200);

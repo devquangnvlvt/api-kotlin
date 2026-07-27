@@ -5,7 +5,8 @@
 
 /*
 |--------------------------------------------------------------------------
-| kèm theo bear token 
+| Mọi request sau đó đính kèm header:
+     Authorization: Bearer {token}
 |--------------------------------------------------------------------------
 *
 
@@ -13,6 +14,10 @@
 # logout: api/user/profile     post
 
 
-# profile:  api/user/profile   post
+# profile:  api/user/profile          post
 # profile update:  api/user/profile   put
+
+
+# UserSetting: api/user/settings   get
+# UserSetting update: api/user/settings put
 

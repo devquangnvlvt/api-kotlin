@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user/profile', [UserController::class, 'profile']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
+
+    Route::get('/user/settings', [UserSettingController::class, 'show']);
+    Route::put('/user/settings', [UserSettingController::class, 'update']);
 });

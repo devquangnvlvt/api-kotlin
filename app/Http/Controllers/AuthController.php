@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Google_Client;
 use App\Http\Resources\UserResource;
+use App\Enums\UserStatus;
 
 class AuthController extends Controller
 {
@@ -61,7 +62,7 @@ class AuthController extends Controller
             }
 
             // Check if account is locked
-            if ($user->status === 'deleted') {
+            if ($user->status === UserStatus::Deleted) {
                 return response()->json([
                     'error' => 'account_locked',
                     'message' => 'Your account has been locked. Please contact support.'
