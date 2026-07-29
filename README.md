@@ -56,3 +56,24 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+
+Giống post_likes nhưng khác đối tượng:
+
+               post_likes	    comment_likes
+Like cái gì 	Bài viết	      Bình luận
+FK	            post_id	         comment_id
+Cập nhật	posts.likes_count	comments.likes_count
+
+
+
+
+shop_purchases dùng để làm gì?
+Chỉ dùng để:
+
+Lịch sử mua hàng — user xem lại đã mua gì, mua lúc nào, giá bao nhiêu
+
+Truy vết giao dịch — wallet_transactions.reference_id trỏ về shop_purchases.id

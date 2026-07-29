@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSettingController;
+use App\Http\Controllers\WalletController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +30,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user/settings', [UserSettingController::class, 'show']);
     Route::put('/user/settings', [UserSettingController::class, 'update']);
+
+    // Wallet
+    Route::get('/wallet', [WalletController::class, 'show']);
+    Route::get('/wallet/transactions', [WalletController::class, 'transactions']);
+
+    // Posts
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::post('/posts', [PostController::class, 'store']);
+    Route::get('/posts/{post}', [PostController::class, 'show']);
+    Route::put('/posts/{post}', [PostController::class, 'update']);
+    Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+    Route::post('/posts/{post}/like', [PostController::class, 'toggleLike']);
+    Route::post('/posts/{post}/save', [PostController::class, 'toggleSave']);
+    Route::get('/users/{userId}/posts', [PostController::class, 'userPosts']);
 });

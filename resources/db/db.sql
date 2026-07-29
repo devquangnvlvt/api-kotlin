@@ -249,7 +249,7 @@ CREATE TABLE `posts` (
   `user_id` bigint UNSIGNED NOT NULL COMMENT 'ID người đăng bài, FK -> users.id',
   `character_id` bigint UNSIGNED DEFAULT NULL COMMENT 'Nhân vật Maker đính kèm (nếu có), FK -> maker_characters.id',
   `caption` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Nội dung văn bản của bài viết',
-  `status` enum('published','hidden','deleted') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'published' COMMENT 'Trạng thái hiển thị bài viết',
+  `status` enum('published','hidden','deleted','followers_only') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'published' COMMENT 'Trạng thái hiển thị bài viết',
   `likes_count` int UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Số lượt thích, đồng bộ qua trigger từ post_likes',
   `comments_count` int UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Số bình luận, đồng bộ qua trigger từ comments',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm đăng bài',
