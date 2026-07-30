@@ -363,6 +363,8 @@ CREATE TABLE `users` (
   `following_count` int UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Số người đang theo dõi, đồng bộ qua trigger',
   `status` enum('active','suspended','deleted') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active' COMMENT 'Trạng thái tài khoản',
   `deleted_at` datetime DEFAULT NULL COMMENT 'Thời điểm xoá mềm tài khoản (soft-delete)',
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'vai trò',
+  `registration_source`varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT ' đăng kí ở đâu mạng xã hội',
   `active_frame_id` bigint UNSIGNED DEFAULT NULL COMMENT 'Khung viền đang được chọn hiển thị, FK -> frames.id',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo tài khoản',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật gần nhất'

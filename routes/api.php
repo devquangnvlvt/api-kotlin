@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,4 +45,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/posts/{post}/like', [PostController::class, 'toggleLike']);
     Route::post('/posts/{post}/save', [PostController::class, 'toggleSave']);
     Route::get('/users/{userId}/posts', [PostController::class, 'userPosts']);
+
+    // Comments
+    Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
+    Route::get('/comments/{comment}/replies', [CommentController::class, 'replies']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+    Route::post('/comments/{comment}/like', [CommentController::class, 'toggleLike']);
 });

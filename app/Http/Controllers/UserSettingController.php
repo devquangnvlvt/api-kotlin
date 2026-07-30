@@ -3,27 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserSetting;
+use App\Services\UserSettingService;
 
 class UserSettingController extends Controller
 {
+    public function __construct(private UserSettingService $userSettingService) {}
+
     /**
      * Lấy settings của user đang đăng nhập
      */
     public function show(Request $request)
     {
-        $settings = UserSetting::firstOrCreate(
-            ['user_id' => $request->user()->id],
-            [
-                'language'       => 'vi',
-                'notify_like'    => true,
-                'notify_comment' => true,
-                'notify_follow'  => true,
-                'notify_mention' => true,
-            ]
-        );
-
-        return response()->json(['settings' => $settings], 200);
+        $result = $this->userSettingService->getSettings($request->user());
+        return response()->json($result['data'], $result['status']);
     }
 
     /**
@@ -39,14 +31,11 @@ class UserSettingController extends Controller
             'notify_mention' => 'sometimes|boolean',
         ]);
 
-        $settings = UserSetting::updateOrCreate(
-            ['user_id' => $request->user()->id],
-            $validated
-        );
+        $result = $this->userSettingService->updateSettings($request->user(), $validated);
 
         return response()->json([
-            'settings' => $settings,
+            'settings' => $result['data'],
             'message'  => 'Settings updated successfully'
-        ], 200);
+        ], $result['status']);
     }
 }

@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'full_name' => $this->full_name,
             'avatar_url' => $this->avatar_url,
             'bio' => $this->bio,
+            'role'=>$this->role,
             'status' => $this->status,
             'checkin_streak' => $this->checkin_streak,
             'last_checkin_date' => $this->last_checkin_date,
@@ -29,6 +30,7 @@ class UserResource extends JsonResource
             'followers_count' => $this->followers_count,
             'following_count' => $this->following_count,
             'active_frame_id' => $this->active_frame_id,
+            'registration_source'=>$this->registration_source,
             // 'created_at' => $this->created_at,
             // 'updated_at' => $this->updated_at,
         ];

@@ -3,26 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Wallet;
+use App\Services\WalletService;
 
 class WalletController extends Controller
 {
+    public function __construct(private WalletService $walletService) {}
+
     /**
      * Lấy số dư ví của user đang đăng nhập
      */
     public function show(Request $request)
     {
-        $wallet = Wallet::firstOrCreate(
-            ['user_id' => $request->user()->id],
-            ['balance' => 0]
-        );
+        $result = $this->walletService->getWallet($request->user());
 
         return response()->json([
-            'wallet' => [
-                'balance'    => $wallet->balance,
-                'updated_at' => $wallet->updated_at,
-            ]
-        ], 200);
+            'wallet' => $result['data']
+        ], $result['status']);
     }
 
     /**
@@ -30,21 +26,16 @@ class WalletController extends Controller
      */
     public function transactions(Request $request)
     {
-        $perPage = $request->query('per_page', 20);
+        $perPage = (int) $request->query('per_page', 20);
+        $result = $this->walletService->getTransactions($request->user(), $perPage);
 
-        $transactions = Wallet::where('user_id', $request->user()->id)
-            ->first()
-            ?->transactions()  // null ->dừng lại ở đây luôn không gọi nữa 
-            ->orderByDesc('created_at')
-            ->paginate($perPage);
-
-        if (!$transactions) {
+        if (empty($result['data'])) {
             return response()->json([
                 'data' => [],
                 'message' => 'No wallet found'
             ], 200);
         }
 
-        return response()->json($transactions, 200);
+        return response()->json($result['data'], $result['status']);
     }
 }

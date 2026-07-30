@@ -4,23 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Models\PostImage;
-use App\Models\PostLike;
-use App\Models\PostSave;
 use App\Http\Resources\PostResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Services\PostService;
 
 class PostController extends Controller
 {
+    public function __construct(private PostService $postService) {}
+
     /**
      * Feed - danh sách bài viết (mới nhất)
      */
     public function index(Request $request)
     {
-        $posts = Post::with(['user', 'images'])
-            ->where('status', 'published')
-            ->orderByDesc('created_at')
-            ->paginate($request->query('per_page', 20));
+        $posts = $this->postService->getFeed(
+            $request->query('per_page', 20)
+        );
 
         return PostResource::collection($posts);
     }
@@ -33,27 +31,14 @@ class PostController extends Controller
         $validated = $request->validate([
             'caption'  => 'nullable|string|max:2000',
             'images'   => 'nullable|array|max:10',
-            'images.*' => 'url',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        $post = Post::create([
-            'user_id' => $request->user()->id,
-            'caption' => $validated['caption'] ?? null,
-            'status'  => 'published',
-        ]);
-
-        // Lưu ảnh nếu có
-        if (!empty($validated['images'])) {
-            $images = array_map(fn($url, $index) => [
-                'post_id'    => $post->id,
-                'image_url'  => $url,
-                'sort_order' => $index,
-            ], $validated['images'], array_keys($validated['images']));
-
-            PostImage::insert($images);
-        }
-
-        $post->load(['user', 'images']);
+        $post = $this->postService->createPost(
+            $request->user(),
+            $validated,
+            $request->hasFile('images') ? $request->file('images') : null
+        );
 
         return response()->json([
             'post'    => new PostResource($post),
@@ -66,13 +51,13 @@ class PostController extends Controller
      */
     public function show(Request $request, Post $post)
     {
-        if ($post->status === 'deleted') {
+        $postData = $this->postService->getPost($post);
+
+        if (!$postData) {
             return response()->json(['message' => 'Post not found'], 404);
         }
 
-        $post->load(['user', 'images']);
-
-        return response()->json(['post' => new PostResource($post)], 200);
+        return response()->json(['post' => new PostResource($postData)], 200);
     }
 
     /**
@@ -85,15 +70,14 @@ class PostController extends Controller
         }
 
         $validated = $request->validate([
-            'caption' => 'sometimes|nullable|string|max:2000',
-            'status'  => 'sometimes|in:published,hidden',
+            'caption' => 'sometimes|nullable|string|max:5000',
+            'status'  => 'sometimes|in:published,hidden,followers_only',
         ]);
 
-        $post->update($validated);
-        $post->refresh()->load(['user', 'images']);
+        $updatedPost = $this->postService->updatePost($post, $validated);
 
         return response()->json([
-            'post'    => new PostResource($post),
+            'post'    => new PostResource($updatedPost),
             'message' => 'Post updated successfully',
         ], 200);
     }
@@ -107,7 +91,7 @@ class PostController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $post->delete();
+        $this->postService->deletePost($post);
 
         return response()->json(['message' => 'Post deleted successfully'], 200);
     }
@@ -117,26 +101,9 @@ class PostController extends Controller
      */
     public function toggleLike(Request $request, Post $post)
     {
-        $userId = $request->user()->id;
+        $result = $this->postService->toggleLike($request->user(), $post);
 
-        $like = PostLike::where('post_id', $post->id)
-            ->where('user_id', $userId)
-            ->first();
-
-        if ($like) {
-            $like->delete();
-            $post->decrement('likes_count');
-            $liked = false;
-        } else {
-            PostLike::create(['post_id' => $post->id, 'user_id' => $userId]);
-            $post->increment('likes_count');
-            $liked = true;
-        }
-
-        return response()->json([
-            'liked'       => $liked,
-            'likes_count' => $post->fresh()->likes_count,
-        ], 200);
+        return response()->json($result, 200);
     }
 
     /**
@@ -144,23 +111,9 @@ class PostController extends Controller
      */
     public function toggleSave(Request $request, Post $post)
     {
-        $userId = $request->user()->id;
+        $result = $this->postService->toggleSave($request->user(), $post);
 
-        $save = PostSave::where('post_id', $post->id)
-            ->where('user_id', $userId)
-            ->first();
-
-        if ($save) {
-            $save->delete();
-            $saved = false;
-        } else {
-            PostSave::create(['post_id' => $post->id, 'user_id' => $userId]);
-            $saved = true;
-        }
-
-        return response()->json([
-            'saved' => $saved,
-        ], 200);
+        return response()->json($result, 200);
     }
 
     /**
@@ -168,11 +121,10 @@ class PostController extends Controller
      */
     public function userPosts(Request $request, int $userId)
     {
-        $posts = Post::with(['user', 'images'])
-            ->where('user_id', $userId)
-            ->where('status', 'published')
-            ->orderByDesc('created_at')
-            ->paginate($request->query('per_page', 20));
+        $posts = $this->postService->getUserPosts(
+            $userId,
+            $request->query('per_page', 20)
+        );
 
         return PostResource::collection($posts);
     }

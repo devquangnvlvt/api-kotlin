@@ -103,6 +103,7 @@
 | Method | URL | Mô tả | Auth |
 |--------|-----|-------|------|
 | GET | `/api/posts/{id}/comments` | Danh sách comment | ✅ |
+| GET | `/api/comments/{id}/replies` | Danh sách reply của 1 comment | ✅ |
 | POST | `/api/posts/{id}/comments` | Thêm comment | ✅ |
 | DELETE | `/api/comments/{id}` | Xóa comment | ✅ |
 | POST | `/api/comments/{id}/like` | Like / Unlike comment (toggle) | ✅ |

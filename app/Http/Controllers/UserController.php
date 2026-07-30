@@ -4,39 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    public function __construct(private UserService $userService) {}
     /**
      * Get authenticated user profile
      */
     public function profile(Request $request)
-    {   
-        
-        return response()->json([
-            'user' => new UserResource($request->user())
-        ], 200);
+    {
+        $result = $this->userService->profile($request->user());
+        return response()->json($result, $result['status']);
     }
 
     /**
      * Update user profile
      */
+    // Controller
     public function updateProfile(Request $request)
     {
-        $user = $request->user();
-        // sometimes — CHỈ validate NẾU có gửi lên, không gửi thì bỏ qua
         $validated = $request->validate([
-            'full_name' => 'sometimes|string|max:255',
-            'username' => 'sometimes|string|max:255|unique:users,username,' . $user->id,
-            'bio' => 'sometimes|nullable|string|max:500',
-            'avatar_url' => 'sometimes|nullable|url',
+            'full_name'  => 'sometimes|string|max:150',
+            'username'   => 'sometimes|string|max:50|unique:users,username,' . $request->user()->id,
+            'bio'        => 'sometimes|nullable|string|max:500',
+            'avatar_url' => 'sometimes|nullable|url|max:500',
         ]);
 
-        $user->update($validated);
-
-        return response()->json([
-            'user' => new UserResource($user),
-            'message' => 'Profile updated successfully'
-        ], 200);
+        $result = $this->userService->updateProfile($request->user(), $validated);
+        return response()->json($result, $result['status'] ?? 200);
     }
 }
