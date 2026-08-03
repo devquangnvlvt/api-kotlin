@@ -3,12 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Google_Client;
-use App\Http\Resources\UserResource;
-use App\Enums\UserStatus;
 use App\Services\AuthService;
 
 class AuthController extends Controller

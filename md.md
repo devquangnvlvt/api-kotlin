@@ -1,3 +1,5 @@
+ở Authorized redirect URIs thêm https://developers.google.com/oauthplayground
+
 lấy id token google
 
 Refresh lại trang OAuth Playground: https://developers.google.com/oauthplayground

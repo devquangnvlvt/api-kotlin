@@ -1,13 +1,16 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,4 +55,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/comments/{comment}/replies', [CommentController::class, 'replies']);
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
     Route::post('/comments/{comment}/like', [CommentController::class, 'toggleLike']);
+
+
+    // Follows
+    Route::post('/follows', [FollowController::class, 'follow']);
+    Route::post('/unfollows', [FollowController::class, 'unfollow']);
+    Route::get('/is-following', [FollowController::class, 'isFollowing']);
+    Route::get('/followers', [FollowController::class, 'getFollowers']);
+    Route::get('/following', [FollowController::class, 'getFollowing']);
+
+
+    // Badge
+    // tất cả danh sách huy hiệu
+    Route::get('/badges', [BadgeController::class, 'index']);
+    Route::get('/user/badges', [BadgeController::class, 'getUserBadges']);
 });

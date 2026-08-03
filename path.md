@@ -98,7 +98,7 @@
 
 ---
 
-## 💬 Comments (TODO)
+## 💬 Comments
 
 | Method | URL | Mô tả | Auth |
 |--------|-----|-------|------|
@@ -110,13 +110,14 @@
 
 ---
 
-## 👥 Follows (TODO)
+## 👥 Follows
 
 | Method | URL | Mô tả | Auth |
 |--------|-----|-------|------|
-| POST | `/api/users/{id}/follow` | Follow / Unfollow (toggle) | ✅ |
-| GET | `/api/users/{id}/followers` | Danh sách followers | ✅ |
-| GET | `/api/users/{id}/following` | Danh sách đang follow | ✅ |
+| POST | `/api/follows` | Follow / Unfollow (toggle) (body: `{"following_id": 2}`) | ✅ |
+| GET | `/api/is-following` | Kiểm tra tài khoản hiện tại có theo dõi user B hay không (`following_id`) | ✅ |
+| GET | `/api/followers` | Danh sách người đang theo dõi mình (followers) | ✅ |
+| GET | `/api/following` | Danh sách những người mình đang theo dõi (following) | ✅ |
 
 ---
 
@@ -145,3 +146,60 @@
 |--------|-----|-------|------|
 | GET | `/api/daily-tasks` | Danh sách nhiệm vụ hôm nay | ✅ |
 | POST | `/api/daily-tasks/{id}/claim` | Nhận thưởng nhiệm vụ | ✅ |
+
+---
+
+## 🏷️ Badges (Huy hiệu)
+
+| Method | URL | Mô tả | Auth |
+|--------|-----|-------|------|
+| GET | `/api/badges` | Lấy danh sách huy hiệu đang hiển thị/bán | ✅ |
+| GET | `/api/user/badges` | Danh sách huy hiệu người dùng đang sở hữu | ✅ |
+| POST | `/api/badges/{id}/buy` | Mua huy hiệu bằng xu | ✅ |
+| PUT | `/api/user/badges/pin` | Ghim / Bỏ ghim huy hiệu hiển thị trên profile (1-3) | ✅ |
+
+---
+
+## 🖼️ Frames (Khung viền Avatar)
+
+| Method | URL | Mô tả | Auth |
+|--------|-----|-------|------|
+| GET | `/api/frames` | Danh sách khung viền avatar trong Shop | ✅ |
+| GET | `/api/user/frames` | Danh sách khung viền người dùng đang sở hữu | ✅ |
+| POST | `/api/frames/{id}/buy` | Mua khung viền avatar | ✅ |
+| PUT | `/api/user/frames/active` | Đeo / Tháo khung viền avatar (`active_frame_id`) | ✅ |
+
+---
+
+## 🎨 Sticker Packs (Gói Nhãn Dán)
+
+| Method | URL | Mô tả | Auth |
+|--------|-----|-------|------|
+| GET | `/api/sticker-packs` | Danh sách các gói sticker trong Shop | ✅ |
+| GET | `/api/sticker-packs/{id}` | Chi tiết gói sticker và danh sách sticker con bên trong | ✅ |
+| GET | `/api/user/sticker-packs` | Danh sách gói sticker người dùng đã sở hữu | ✅ |
+| POST | `/api/sticker-packs/{id}/buy` | Mua gói sticker | ✅ |
+
+---
+
+## 🛒 Shop & Purchases (Lịch sử Mua hàng)
+
+| Method | URL | Mô tả | Auth |
+|--------|-----|-------|------|
+| GET | `/api/shop/history` | Lịch sử mua sắm vật phẩm (Frame, Badge, Sticker pack, ...) | ✅ |
+
+---
+
+## 📺 Ad Rewards (Xem Quảng Cáo)
+
+| Method | URL | Mô tả | Auth |
+|--------|-----|-------|------|
+| POST | `/api/ads/reward` | Nhận thưởng xu sau khi xem xong video quảng cáo | ✅ |
+
+---
+
+## 🏆 Leaderboard (Bảng Xếp Hạng)
+
+| Method | URL | Mô tả | Auth |
+|--------|-----|-------|------|
+| GET | `/api/leaderboard` | Lấy bảng xếp hạng top nhận xu (`period_type`: `week`, `month`, `all_time`) | ✅ |
