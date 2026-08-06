@@ -7,21 +7,35 @@ use Illuminate\Http\Request;
 
 class BadgeController extends Controller
 {
-
     public function __construct(
         private BadgeService $badgeService
     ) {}
 
+    /**
+     * Lấy tất cả badge đang bán trong shop
+     */
     public function index()
     {
-        $badges = $this->badgeService->getAllActiveBadges();
-        return response()->json($badges);
+        return response()->json($this->badgeService->getAllActiveBadges());
     }
 
+    /**
+     * Lấy tất cả badge user hiện tại đang sở hữu
+     */
     public function getUserBadges(Request $request)
     {
-        $userId = $request->user()->id;
-        $badges = $this->badgeService->getUserBadges($userId);
-        return response()->json($badges);
+        return response()->json($this->badgeService->getUserBadges($request->user()->id));
+    }
+
+    /**
+     * Mua huy hiệu bằng xu
+     */
+    public function buy(Request $request, int $badgeId)
+    {
+        return response()->json($this->badgeService->buyBadge($request->user()->id, $badgeId));
+    }
+
+    public function receive(Request $request, int $badgeId) {
+         return response()->json($this->badgeService->receiveBadge($request->user()->id, $badgeId));
     }
 }

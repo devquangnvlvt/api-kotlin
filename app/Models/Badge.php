@@ -13,8 +13,8 @@ class Badge extends Model
         'is_active',
     ];
 
-    public function scopeActive()
+    public function scopeActive($query)
     {
-        return $this->where('is_active', 1);
+        return $query->where('is_active', 1);
     }
 }

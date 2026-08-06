@@ -66,7 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Badge
-    // tất cả danh sách huy hiệu
     Route::get('/badges', [BadgeController::class, 'index']);
     Route::get('/user/badges', [BadgeController::class, 'getUserBadges']);
+    Route::post('/badges/{badgeId}/buy', [BadgeController::class, 'buy']);
+    Route::post('/badges/{badgeId}/receive', [BadgeController::class, 'receive']); // nhận huy hiệu thành tích
 });

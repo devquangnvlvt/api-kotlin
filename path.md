@@ -156,6 +156,7 @@
 | GET | `/api/badges` | Lấy danh sách huy hiệu đang hiển thị/bán | ✅ |
 | GET | `/api/user/badges` | Danh sách huy hiệu người dùng đang sở hữu | ✅ |
 | POST | `/api/badges/{id}/buy` | Mua huy hiệu bằng xu | ✅ |
+| POST | `/api/badges/{id}/receive` | nhận huy hiệu | ✅ |
 | PUT | `/api/user/badges/pin` | Ghim / Bỏ ghim huy hiệu hiển thị trên profile (1-3) | ✅ |
 
 ---

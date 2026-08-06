@@ -30,5 +30,9 @@ class User extends Authenticatable
         ];
     }
 
+
+    public function wallet(){
+        return $this->belongsTo(Wallet::class);
+    }
     
 }
