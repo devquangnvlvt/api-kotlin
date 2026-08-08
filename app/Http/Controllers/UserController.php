@@ -14,7 +14,13 @@ class UserController extends Controller
      */
     public function profile(Request $request)
     {
-        $result = $this->userService->profile($request->user());
+        $user = $request->user();
+
+        if (!empty($user->active_frame_id)) {
+            $user->load(['frame']);
+        }
+
+        $result = $this->userService->profile($user);
         return response()->json($result, $result['status']);
     }
 

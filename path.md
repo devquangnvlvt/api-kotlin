@@ -145,7 +145,7 @@
 | Method | URL | Mô tả | Auth |
 |--------|-----|-------|------|
 | GET | `/api/daily-tasks` | Danh sách nhiệm vụ hôm nay | ✅ |
-| POST | `/api/daily-tasks/{id}/claim` | Nhận thưởng nhiệm vụ | ✅ |
+| POST | `/api/daily-tasks/{id}/update` | Cập nhật trạng thái nhiệm vụ | ✅ |
 
 ---
 
@@ -168,6 +168,7 @@
 | GET | `/api/frames` | Danh sách khung viền avatar trong Shop | ✅ |
 | GET | `/api/user/frames` | Danh sách khung viền người dùng đang sở hữu | ✅ |
 | POST | `/api/frames/{id}/buy` | Mua khung viền avatar | ✅ |
+| POST | `/api/frames/{id}/receive` | nhận huy hiệu | ✅ |
 | PUT | `/api/user/frames/active` | Đeo / Tháo khung viền avatar (`active_frame_id`) | ✅ |
 
 ---

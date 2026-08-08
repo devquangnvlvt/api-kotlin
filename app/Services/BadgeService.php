@@ -44,9 +44,9 @@ class BadgeService
         // 1. Kiểm tra badge tồn tại, đang active và có thể mua (price > 0)
         $badge = Badge::active()
             ->where('id', $badgeId)
-            ->where('price', '>', 0) // price = 0 là huy hiệu thành tích, không bán
+            // ->where('price', '>', 0) // price = 0 là huy hiệu thành tích, không bán
             ->first();
-          
+
         if (!$badge) {
             return $this->error('Huy hiệu không tồn tại hoặc không còn bán', 404);
         }
@@ -91,22 +91,23 @@ class BadgeService
             ]);
         });
 
-        return $this->success( 'Mua huy hiệu thành công');
+        return $this->success('Mua huy hiệu thành công');
     }
     /**
      * Nhận huy hiệu thành tích
      */
-    public function receiveBadge(int $userId, int $badgeId){
+    public function receiveBadge(int $userId, int $badgeId)
+    {
         // 1  check xem huy hiệu đó còn hoạt động không
         $badge = Badge::active()
             ->where('id', $badgeId)
-            ->where('price','=',0)
+            ->where('price', '=', 0)
             ->first();
 
-        if(!$badge){
-           return $this->error('Huy hiệu không tồn tại hoặc không còn bán', 404);
+        if (!$badge) {
+            return $this->error('Huy hiệu không tồn tại hoặc không còn bán', 404);
         }
-         // 2. Kiểm tra user đã có badge này chưa
+        // 2. Kiểm tra user đã có badge này chưa
         $alreadyOwned = UserBadge::where('user_id', $userId)
             ->where('badge_id', $badgeId)
             ->exists();
@@ -114,6 +115,10 @@ class BadgeService
         if ($alreadyOwned) {
             return $this->error('Bạn đã sở hữu huy hiệu này rồi', 409);
         }
+
+        ShopPurchase::record($userId, 'badge', $badge->id, $badge->price);
+
+
 
         // 3. Cấp huy hiệu cho user
         UserBadge::create([

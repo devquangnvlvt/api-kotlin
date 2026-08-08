@@ -63,7 +63,7 @@ CREATE TABLE `checkin_logs` (
   `streak_day` tinyint UNSIGNED NOT NULL COMMENT 'Ngày thứ mấy trong chuỗi 7 ngày (1-7)',
   `reward_amount` int UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Số tiền/xu thưởng nhận được khi điểm danh',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm ghi nhận bản ghi điểm danh'
-) ;
+);
 
 -- --------------------------------------------------------
 

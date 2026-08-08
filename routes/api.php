@@ -11,6 +11,13 @@ use App\Http\Controllers\WalletController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\CheckinLogController;
+use App\Http\Controllers\DailyTaskController;
+use App\Http\Controllers\FrameController;
+use App\Http\Controllers\StickerController;
+use App\Http\Controllers\StickerPackController;
+use App\Http\Controllers\UserDailyTaskController;
+use App\Http\Controllers\UserStickerPackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,10 +71,37 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/followers', [FollowController::class, 'getFollowers']);
     Route::get('/following', [FollowController::class, 'getFollowing']);
 
-
     // Badge
     Route::get('/badges', [BadgeController::class, 'index']);
     Route::get('/user/badges', [BadgeController::class, 'getUserBadges']);
     Route::post('/badges/{badgeId}/buy', [BadgeController::class, 'buy']);
     Route::post('/badges/{badgeId}/receive', [BadgeController::class, 'receive']); // nhận huy hiệu thành tích
+
+    // frame 
+    Route::get('/frames', [FrameController::class, 'index']);
+    Route::get('/user/frames', [FrameController::class, 'getUserFrames']);
+    Route::post('/frames/{frameId}/buy', [FrameController::class, 'buy']);
+    Route::post('/frames/{frameId}/receive', [FrameController::class, 'receive']); // nhận khung thành tích
+    Route::post('/frames/{frameId}/active', [FrameController::class, 'userActiveFrame']); // đeo khung viền
+
+    // Sticker Pack
+    Route::get('/sticker-packs', [StickerPackController::class, 'index']);
+    Route::post('/sticker-packs/{id}/buy', [StickerPackController::class, 'buy']);
+    Route::get('/sticker-packs/{id}', [StickerPackController::class, 'show']);
+
+    // User Sticker Pack
+    Route::get('/user/sticker-packs', [UserStickerPackController::class, 'index']);
+
+
+    // daily task
+    Route::get('daily-tasks', [DailyTaskController::class, 'index']);
+    Route::post('daily-tasks/{id}/update', [DailyTaskController::class, 'updateStatus']);
+
+    //user daily task
+    Route::get('user/daily-tasks', [UserDailyTaskController::class, 'index']);
+
+
+    // Checkin
+    Route::post('/checkin', [CheckinLogController::class, 'checkin']);
+    Route::get('/checkin/status', [CheckinLogController::class, 'status']);
 });

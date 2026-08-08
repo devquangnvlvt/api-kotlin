@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['google_uid', 'username', 'email', 'full_name', 'avatar_url', 'bio', 'status','role','registration_source'])]
+#[Fillable(['google_uid', 'username', 'email', 'full_name', 'avatar_url', 'bio', 'status', 'role', 'registration_source', 'last_checkin_date', 'checkin_streak'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -31,8 +31,13 @@ class User extends Authenticatable
     }
 
 
-    public function wallet(){
+    public function wallet()
+    {
         return $this->belongsTo(Wallet::class);
     }
-    
+
+    public function frame()
+    {
+        return $this->belongsTo(Frame::class, 'active_frame_id');
+    }
 }

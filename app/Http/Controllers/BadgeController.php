@@ -35,6 +35,9 @@ class BadgeController extends Controller
         return response()->json($this->badgeService->buyBadge($request->user()->id, $badgeId));
     }
 
+    /**
+     * Nhận huy hiệu thành tích
+     */
     public function receive(Request $request, int $badgeId) {
          return response()->json($this->badgeService->receiveBadge($request->user()->id, $badgeId));
     }

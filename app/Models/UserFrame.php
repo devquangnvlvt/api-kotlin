@@ -4,16 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CheckinLog extends Model
+class UserFrame extends Model
 {
-
     public $timestamps = false;
-    
     protected $fillable = [
         'user_id',
-        'checkin_date',
-        'streak_day',
-        'reward_amount',
-        'created_at'
+        'frame_id',
+        'acquired_at',
     ];
+
+    public function frame()
+    {
+        return $this->belongsTo(Frame::class);
+    }
 }
